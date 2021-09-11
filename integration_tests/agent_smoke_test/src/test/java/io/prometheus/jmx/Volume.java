@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 /**
  * Create a temporary directory with the agent, example application, and config.yml.
  * The directory will be mounted as a volume in the test container.
@@ -46,7 +48,7 @@ public class Volume implements Closeable {
     public void copyConfigYaml(String filename) throws IOException, URISyntaxException {
         Path configYaml = Paths.get(getClass().getClassLoader().getResource(filename).toURI());
         Assert.assertTrue(filename + ": File not found.", Files.exists(configYaml));
-        Files.copy(configYaml, tmpDir.resolve("config.yaml"));
+        Files.copy(configYaml, tmpDir.resolve("config.yaml"), REPLACE_EXISTING);
     }
 
     public void copyExampleApplication() throws IOException {
